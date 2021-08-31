@@ -1,0 +1,20 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Administration{% endblock %}
+
+{% block body %}
+    <div class="mx-auto w-1/2 text-center">
+        {{ form_start(form) }}
+        {{ form_label(form.end) }}
+        <div class="text-black w-full">{{ form_widget(form.end) }}</div>
+        {{ form_label(form.winner) }}
+        <div class="text-black w-full">{{ form_widget(form.winner) }}</div>
+        {{ form_label(form.Blancs) }}
+        <div class="text-black w-full">{{ form_widget(form.Blancs) }}</div>
+        {{ form_label(form.Noirs) }}
+        <div class="text-black w-full mb-4">{{ form_widget(form.Noirs) }}</div>
+        {{ form_row(form.save, {'attr' : {'class' : 'btn-primary'}}) }}
+        {{ form_end(form) }}
+    </div>
+
+{% endblock %}

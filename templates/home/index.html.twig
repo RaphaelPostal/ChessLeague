@@ -1,0 +1,35 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}ChessLeague - Accueil{% endblock %}
+
+{% block head_title %}ChessLeague{% endblock %}
+
+{% block body %}
+    <table class="w-1/2 mx-auto">
+        <thead>
+            <tr>
+                <th>Partie n°</th>
+                <th>Gagnant</th>
+                <th>Issue</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for game in all_games %}
+            <tr class="border-solid border-2 border-white text-center">
+                <td >{{ loop.index }}</td>
+                {% if game.winner == game.blancs %}
+                    <td class="bg-white bg-opacity-80 text-black">{{ game.winner.name }}</td>
+                {% elseif game.winner == game.noirs %}
+                    <td class="bg-black bg-opacity-60">{{ game.winner.name }}</td>
+                {% elseif game.end == constant('App\\Entity\\Game::DRAW') %}
+                    <td class="bg-gray-custom">Aucun</td>
+                {% endif %}
+                <td>{{ game.end }}</td>
+            </tr>
+
+        {% endfor%}
+
+        </tbody>
+    </table>
+
+{% endblock %}
