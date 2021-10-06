@@ -9,18 +9,19 @@
             {{ encore_entry_link_tags('app') }}
         {% endblock %}
 
-        {% block javascripts %}
-            {{ encore_entry_script_tags('app') }}
-        {% endblock %}
     </head>
     <body class="px-8 text-white">
-        <nav class="py-4 mb-8">
-            <div class="flex w-24 space-x-4">
-                <a href="{{ path('home') }}">Accueil</a>
-                <a href="{{ path('admin') }}">Administration</a>
-            </div>
-        </nav>
-        <h1 class="text-3xl text-center mb-12">{% block head_title %}{% endblock %}</h1>
+{#        <nav class="py-4 mb-8">#}
+{#            <div class="flex w-24 space-x-4">#}
+{#                <a href="{{ path('home') }}">Accueil</a>#}
+{#                <a href="{{ path('admin') }}">Administration</a>#}
+{#            </div>#}
+{#        </nav>#}
+        <h1 class="text-3xl text-center my-12">{% block head_title %}{% endblock %}</h1>
         {% block body %}{% endblock %}
     </body>
 </html>
+
+{% block javascripts %}
+    {{ encore_entry_script_tags('app') }}
+{% endblock %}

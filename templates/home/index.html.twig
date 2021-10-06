@@ -6,32 +6,157 @@
 
 {% block body %}
 
-    <h2 class="text-2xl text-center mb-8">{{ pts_raph }} - {{ pts_cst }}</h2>
+    <h2 class="text-2xl text-center mb-8">Raphaël {{ pts_raph }} - {{ pts_cst }} Constant</h2>
     <table class="w-1/2 mx-auto">
         <thead>
-            <tr>
-                <th class="w-12"></th>
-                <th>Gagnant</th>
-                <th>Issue</th>
-            </tr>
+        <tr>
+            <th class="w-12"></th>
+            <th>Gagnant</th>
+            <th>Issue</th>
+        </tr>
         </thead>
         <tbody>
         {% for game in all_games %}
             <tr class="border-solid border-2 border-white text-center">
-                <td >{{ loop.index }}</td>
+                <td>{{ loop.index }}</td>
                 {% if game.winner == game.blancs %}
                     <td class="bg-white bg-opacity-80 text-black">{{ game.winner.name }}</td>
                 {% elseif game.winner == game.noirs %}
                     <td class="bg-black bg-opacity-60">{{ game.winner.name }}</td>
-                {% elseif game.end == constant('App\\Entity\\Game::DRAW') %}
+                {% elseif 'Nulle' in game.end %}
+                    {# constant('App\\Entity\\Game::DRAW_AGREE') #}
                     <td class="bg-gray-custom">Aucun</td>
                 {% endif %}
                 <td>{{ game.end }}</td>
             </tr>
-
-        {% endfor%}
+        {% endfor %}
 
         </tbody>
     </table>
+
+    <h3 class="text-center text-2xl mt-8">Victoires totales (général)</h3>
+    <div class="mx-auto w-1/3 mt-8">
+        <canvas id="chart_wb_gen"></canvas>
+    </div>
+
+    <div class="w-2/3 mx-auto flex justify-between mt-12">
+        <div>
+            <h4 class="text-xl text-center mb-8">Victoires Raphaël</h4>
+            <canvas id="chart_win_raph"></canvas>
+            <canvas id="chart_win_raph_types"></canvas>
+        </div>
+        <div>
+            <h4 class="text-xl text-center mb-8">Victoires Constant</h4>
+            <canvas id="chart_win_cst"></canvas>
+            <canvas id="chart_win_cst_type"></canvas>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.0.1/chart.min.js"></script>
+    <script>
+        //repartition victoires blancs/noirs générale
+        Chart.defaults.color = '#FFFFFF'
+        Chart.defaults.font.size = 15;
+
+        var ctx1 = document.getElementById('chart_wb_gen').getContext('2d');
+        var datas1 = {{ allGamesWon }}
+
+        var chart_wb_gen = new Chart(ctx1, {
+            type: 'doughnut',
+            data: {
+                labels: [
+                    'Avec les blancs',
+                    'Nulles',
+                    'Avec les noirs'
+
+                ],
+                datasets: [{
+                    data: datas1,
+                    backgroundColor: [
+                        'white',
+                        'gray',
+                        'black',
+                    ]
+                }]
+            },
+            options: {
+                plugins: {
+                    legend: {
+                        labels: {
+                            font: {
+                                size: 18
+                            }
+                        }
+                    },
+                }
+            }
+        })
+
+        var ctx2 = document.getElementById('chart_win_raph').getContext('2d');
+        var datas2 = {{ tabRaphWin }}
+
+        var chart_win_raph = new Chart(ctx2, {
+            type: 'doughnut',
+            data: {
+                labels: [
+                    'Avec les blancs',
+                    'Avec les noirs'
+
+                ],
+                datasets: [{
+                    data: datas2,
+                    backgroundColor: [
+                        'white',
+                        'black',
+                    ]
+                }]
+            },
+            options: {
+                plugins: {
+                    legend: {
+                        labels: {
+                            font: {
+                                size: 18
+                            }
+                        }
+                    },
+                }
+            }
+        })
+        var ctx3 = document.getElementById('chart_win_cst').getContext('2d');
+        var datas3 = {{ tabCstWin }}
+
+        var chart_win_cst = new Chart(ctx3, {
+            type: 'doughnut',
+            data: {
+                labels: [
+                    'Avec les blancs',
+                    'Avec les noirs'
+
+                ],
+                datasets: [{
+                    data: datas3,
+                    backgroundColor: [
+                        'white',
+                        'black',
+                    ]
+                }]
+            },
+            options: {
+                plugins: {
+                    legend: {
+                        labels: {
+                            font: {
+                                size: 18
+                            }
+                        }
+                    },
+                }
+            }
+        })
+    </script>
 
 {% endblock %}

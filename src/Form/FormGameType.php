@@ -22,7 +22,9 @@ class FormGameType extends AbstractType
                 'choices' => [
                     'Mat' => Game::MATE,
                     'Abandon' => Game::SURREND,
-                    'Égalité' => Game::DRAW
+                    'Nulle (accord)' => Game::DRAW_AGREE,
+                    'Nulle (pat)' => Game::DRAW_PAT,
+                    'Nulle (répétition)' => Game::DRAW_REP
                 ]
             ])
             ->add('winner', EntityType::class, [

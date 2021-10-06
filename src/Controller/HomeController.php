@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Repository\GameRepository;
+use App\Repository\PlayerRepository;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -14,10 +15,9 @@ class HomeController extends AbstractController
     /**
      * @Route("/", name="home")
      * @param GameRepository $gameRepository
-     * @param EntityManagerInterface $entityManager
      * @return Response
      */
-    public function index(GameRepository $gameRepository, EntityManagerInterface $entityManager): Response
+    public function index(GameRepository $gameRepository): Response
     {
         $all_games = $gameRepository->findAll();
         $pointsRaphael = 0;
@@ -36,10 +36,39 @@ class HomeController extends AbstractController
             }
         }
 
+        //datas white black general
+        $nbGamesWonWithWhite = count($gameRepository->findAllWonByColor('Blancs'));
+        $nbGamesWonWithBlack = count($gameRepository->findAllWonByColor('Noirs'));
+        $nbGamesDraw = count($gameRepository->findAllDraw());
+        $allGamesWon = json_encode([$nbGamesWonWithWhite,$nbGamesDraw, $nbGamesWonWithBlack]);
+
+        //Raphaël : donut victoires blancs/noirs
+        $nbRaphWinWhite = count($gameRepository->findALLWonByColorAndName('Blancs', 'Raphaël'));
+        $nbRaphWinBlack = count($gameRepository->findALLWonByColorAndName('Noirs', 'Raphaël'));
+        $tabRaphWin = json_encode([$nbRaphWinWhite, $nbRaphWinBlack]);
+        //Constant : donut victoires blancs/noirs
+        $nbCstWinWhite = count($gameRepository->findALLWonByColorAndName('Blancs', 'Constant'));
+        $nbCstWinBlack = count($gameRepository->findALLWonByColorAndName('Noirs', 'Constant'));
+        $tabCstWin = json_encode([$nbCstWinWhite, $nbCstWinBlack]);
+
+        //Raphael : ratio victoires sur abandon ou mat
+
+        //Constant : ratio victoires sur abandon ou mat
+
+        //Raphaël : donut victoires/défaites/nulles
+
+        //Constant : donut victoires/défaites/nulles
+
+
+
+
         return $this->render('home/index.html.twig', [
             'all_games' => $all_games,
             'pts_raph' => $pointsRaphael,
             'pts_cst' => $pointsConstant,
+            'allGamesWon' => $allGamesWon,
+            'tabRaphWin' => $tabRaphWin,
+            'tabCstWin' => $tabCstWin,
         ]);
     }
 }

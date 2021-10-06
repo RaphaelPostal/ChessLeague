@@ -12,7 +12,9 @@ class Game
 {
     const SURREND = 'Abandon',
           MATE = 'Mat',
-          DRAW = 'Nulle';
+          DRAW_AGREE = 'Nulle (accord)',
+          DRAW_PAT = 'Nulle (pat)',
+          DRAW_REP = 'Nulle (répétition)';
 
     /**
      * @ORM\Id

@@ -26,7 +26,7 @@ class AdminController extends AbstractController
 
         if($form->isSubmitted() && $form->isValid()) {
             $game = $form->getData();
-            if ($game->getEnd() === Game::DRAW) {
+            if (strpos($game->getEnd(), 'Nulle')) {
                 $game->setWinner(null);
             }
             $entityManager->persist($game);

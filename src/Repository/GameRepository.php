@@ -22,29 +22,38 @@ class GameRepository extends ServiceEntityRepository
     // /**
     //  * @return Game[] Returns an array of Game objects
     //  */
-    /*
-    public function findByExampleField($value)
+
+    public function findAllWonByColor($value)
     {
         return $this->createQueryBuilder('g')
-            ->andWhere('g.exampleField = :val')
-            ->setParameter('val', $value)
+            ->where('g.'.$value.' = g.winner')
             ->orderBy('g.id', 'ASC')
-            ->setMaxResults(10)
             ->getQuery()
             ->getResult()
         ;
     }
-    */
 
-    /*
-    public function findOneBySomeField($value): ?Game
+    public function findAllDraw()
     {
         return $this->createQueryBuilder('g')
-            ->andWhere('g.exampleField = :val')
-            ->setParameter('val', $value)
+            ->where('g.winner is NULL')
+            ->orderBy('g.id', 'ASC')
             ->getQuery()
-            ->getOneOrNullResult()
+            ->getResult()
+            ;
+    }
+
+    public function findALLWonByColorAndName($color, $name)
+    {
+        return $this->createQueryBuilder('g')
+            ->innerJoin('g.winner', "player")
+            ->innerJoin('g.'.$color, 'playerColor')
+            ->where('player.name = :name')
+            ->andWhere('playerColor.name =:name')
+            ->setParameter('name', $name)
+            ->getQuery()
+            ->getResult()
         ;
     }
-    */
+
 }
